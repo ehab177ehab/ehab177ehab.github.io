@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nature Wallpapers</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f0f8ff;
+            text-align: center;
+        }
+        h1 {
+            color: #2c5e1a;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 10px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .wallpaper {
+            max-width: 90%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            margin: 20px auto;
+            display: block;
+        }
+        .download-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: #2c5e1a;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .credit {
+            font-size: 12px;
+            color: #666;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🌿 Nature Wallpapers 🏞️</h1>
+    <p>Click the button to discover stunning nature photos!</p>
+    <button id="fetchWallpaper">Next Wallpaper!</button>
+    <div id="wallpaperContainer">
+        
+    </div>
+    
+
+    <script>
+        const API_KEY = '49541124-c640d2942bb0eaedc987f115c'; 
+        const BASE_URL = `https://pixabay.com/api/?key=${API_KEY}&q=nature&orientation=horizontal&per_page=50`;
+
+        document.getElementById('fetchWallpaper').addEventListener('click', fetchWallpaper);
+
+        async function fetchWallpaper() {
+            try {
+                const response = await fetch(BASE_URL);
+                const data = await response.json();
+                const randomImage = data.hits[Math.floor(Math.random() * data.hits.length)];
+                
+                document.getElementById('wallpaperContainer').innerHTML = `
+                    <img src="${randomImage.largeImageURL}" alt="Nature Wallpaper" class="wallpaper">
+                    <a href="${randomImage.largeImageURL}" download="nature-wallpaper-${Date.now()}.jpg" class="download-link">
+                        ⬇ Download
+                    </a>
+                `;
+            } catch (error) {
+                document.getElementById('wallpaperContainer').innerHTML = `
+                    <p>Failed to load wallpaper. Try again later!</p>
+                `;
+                console.error(error);
+            }
+        }
+
+        // Load a wallpaper on page startup
+        fetchWallpaper();
+    </script>
+</body>
+</html>
